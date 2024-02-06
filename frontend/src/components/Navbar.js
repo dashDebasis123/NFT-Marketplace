@@ -1,12 +1,7 @@
-import logo from '../logo_3.png';
+// import logo from '../logo_3.png';
 import fullLogo from '../full_logo.png';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useParams
+    BrowserRouter as Link
 } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -54,7 +49,7 @@ function Navbar() {
     }
 
     useEffect(() => {
-        if (window.ethereum == undefined)
+        if (window.ethereum === undefined)
             return;
         let val = window.ethereum.isConnected();
         if (val) {
