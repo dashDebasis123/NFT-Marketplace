@@ -1,6 +1,6 @@
-// import axie from "../tile.jpeg";
+import axie from "../tile.jpeg";
 import {
-    BrowserRouter as 
+    BrowserRouter as Router,
     Link,
   } from "react-router-dom";
   import { GetIpfsUrlFromPinata } from "../utils";

@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
 import { useState } from "react";
@@ -88,7 +88,7 @@ export default function Profile () {
                     })}
                 </div>
                 <div className="mt-10 text-xl">
-                    {data.length === 0 ? "Oops, No NFT data to display (Are you logged in?)":""}
+                    {data.length == 0 ? "Oops, No NFT data to display (Are you logged in?)":""}
                 </div>
             </div>
             </div>
