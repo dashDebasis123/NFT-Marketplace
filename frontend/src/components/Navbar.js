@@ -86,6 +86,15 @@ function Navbar() {
                         <ul className='lg:flex justify-between font-bold mr-10 text-lg'>
                             {location.pathname === "/" ?
                                 <li className='border-b-2 hover:pb-0 p-2'>
+                                    <Link to="signupPage">Signup</Link>
+                                </li>
+                                :
+                                <li className='hover:border-b-2 hover:pb-0 p-2'>
+                                    <Link to="signupPage">Signup</Link>
+                                </li>
+                            }
+                            {location.pathname === "/" ?
+                                <li className='border-b-2 hover:pb-0 p-2'>
                                     <Link to="/">Marketplace</Link>
                                 </li>
                                 :
@@ -102,6 +111,17 @@ function Navbar() {
                                     <Link to="/sellNFT">List My NFT</Link>
                                 </li>
                             }
+
+                            {location.pathname === "/lottery" ?
+                                <li className='border-b-2 hover:pb-0 p-2'>
+                                    <Link to="/lottery">Lottery</Link>
+                                </li>
+                                :
+                                <li className='hover:border-b-2 hover:pb-0 p-2'>
+                                    <Link to="/lottery">Lottery</Link>
+                                </li>
+                            }
+
                             {location.pathname === "/profile" ?
                                 <li className='border-b-2 hover:pb-0 p-2'>
                                     <Link to="/profile">Profile</Link>
