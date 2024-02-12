@@ -74,32 +74,24 @@ function Navbar() {
             <nav className="w-screen">
                 <ul className='flex items-end justify-between py-3 bg-transparent text-white pr-5'>
                     <li className='flex items-end ml-5 pb-2'>
-                        <Link to="/">
-                            <img src={fullLogo} alt="" width={120} height={120} className="inline-block -mt-2" />
-                            <div className='inline-block font-bold text-xl ml-2'>
-                                Welcome to Land Registry
 
-                            </div>
-                        </Link>
+                        <img src={fullLogo} alt="" width={120} height={120} className="inline-block -mt-2" />
+                        <div className='inline-block font-bold text-xl ml-2'>
+                            Welcome to Land Registry
+
+                        </div>
+
                     </li>
                     <li className='w-2/6'>
                         <ul className='lg:flex justify-between font-bold mr-10 text-lg'>
-                            {location.pathname === "/" ?
+                
+                            {location.pathname === "/marketplace" ?
                                 <li className='border-b-2 hover:pb-0 p-2'>
-                                    <Link to="signupPage">Signup</Link>
+                                    <Link to="/marketplace">Marketplace</Link>
                                 </li>
                                 :
                                 <li className='hover:border-b-2 hover:pb-0 p-2'>
-                                    <Link to="signupPage">Signup</Link>
-                                </li>
-                            }
-                            {location.pathname === "/" ?
-                                <li className='border-b-2 hover:pb-0 p-2'>
-                                    <Link to="/">Marketplace</Link>
-                                </li>
-                                :
-                                <li className='hover:border-b-2 hover:pb-0 p-2'>
-                                    <Link to="/">Marketplace</Link>
+                                    <Link to="/marketplace">Marketplace</Link>
                                 </li>
                             }
                             {location.pathname === "/sellNFT" ?
