@@ -23,8 +23,8 @@ function App() {
         <UserAuthContextProvider>
             <Routes>
                 <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
-                <Route path="/sellNFT" element={<SellNFT />} />
-                <Route path="/nftPage/:tokenId" element={<NFTPage />} />
+                <Route path="/sellNFT" element={<ProtectedRoute><SellNFT /></ProtectedRoute>} />
+                <Route path="/nftPage/:tokenId" element={<ProtectedRoute><NFTPage /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Login />} />

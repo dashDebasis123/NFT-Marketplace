@@ -8,14 +8,24 @@ import {
     BrowserRouter,
 
 } from "react-router-dom";
+import { DAppProvider, Sepolia } from "@usedapp/core"
+import { getDefaultProvider } from 'ethers';
 
-
+const config = {
+    readOnlyChainId: Sepolia.chainId,
+    readOnlyUrls: {
+        [Sepolia.chainId]:getDefaultProvider('sepolia'),
+    },
+}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <DAppProvider config={config}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </DAppProvider>
+
     </React.StrictMode>
 );
 
