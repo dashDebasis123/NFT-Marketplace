@@ -76,7 +76,7 @@ export default function Profile() {
 
                         <br />
                         {/* {userBalance} */}
-                        {balance ? utils.formatEther(balance) : 0} ETH
+                        {/* {balance ? utils.formatEther(balance) : 0} ETH */}
                         Chain Id = {chainId}
                     </div>
                 </div>
