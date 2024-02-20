@@ -16,7 +16,7 @@ const SendMessage = () => {
         console.log(uid)
         console.log(displayName)
         console.log(message)
-        await addDoc(doc(db, 'messages'), {
+        await setDoc(doc(db, 'messages','test32'), {
             text: message,
             name: displayName,
             createdAt: serverTimestamp(),
