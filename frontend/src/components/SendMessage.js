@@ -1,45 +1,83 @@
-import { useState } from 'react';
-import { auth, db } from '../firebase';
-import { addDoc, setDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
-
+import { useEffect, useState } from "react"
+import { auth, db } from "../firebase"
+import { getDoc, addDoc, setDoc, collection, serverTimestamp, doc } from "firebase/firestore"
+import Navbar from "./Navbar"
 const SendMessage = () => {
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState("")
+    const [output, setOutput] = useState()
 
     const sendMessage = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        if (message.trim() === '') {
-            alert('enter valid message');
-            return;
+        if (message.trim() === "") {
+            alert("enter valid message")
+            return
         }
-        const { uid, displayName } = auth.currentUser;
+        const { uid, displayName } = auth.currentUser
         console.log(uid)
-        console.log(displayName)
+        // console.log(displayName)
         console.log(message)
-        await setDoc(doc(db, 'messages','test32'), {
+        await setDoc(doc(db, "messages", "test32"), {
             text: message,
             name: displayName,
             createdAt: serverTimestamp(),
             uid,
-        });
-        setMessage('');
-    };
+        })
+        setMessage("")
+
+        const docRef = doc(db, "messages", "test32")
+        console.log("docref = ", docRef)
+        const docSnap = await getDoc(docRef)
+        console.log("Document: ", docSnap.data())
+
+        if (docSnap.exists()) {
+            let d = docSnap.data()
+            console.log("Document: ", docSnap.data())
+            console.log(d.uid, d.text)
+        } else {
+            console.log("error")
+        }
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log("2")
+            const docRef = doc(db, "messages", "test32")
+            console.log("docref = ", docRef)
+            const docSnap = await getDoc(docRef)
+            console.log("Document: ", docSnap.data())
+
+            if (docSnap.exists()) {
+                console.log("Document: ", docSnap.data())
+                setOutput(docSnap.data())
+                console.log("output: ", output)
+            } else {
+                console.log("error")
+            }
+        }
+        fetchData()
+    }, [output])
 
     return (
-        <form onSubmit={(event) => sendMessage(event)} className="send-message">
-            <input
-                id="messageInput"
-                name="messageInput"
-                type="text"
-                className="form-input__input"
-                placeholder="type message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-            />
+        <div className="flex flex-col place-items-center mt-10">
+            <Navbar></Navbar>
+            <form onSubmit={(event) => sendMessage(event)} className="send-message ">
+                <input
+                    id="messageInput"
+                    name="messageInput"
+                    type="text"
+                    className="form-input__input text-sm font-medium leading-6 text-gray-900"
+                    placeholder="type message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                />
 
-            <button type="submit">Send</button>
-        </form>
-    );
-};
+                <button type="submit">Send</button>
+            </form>
 
-export default SendMessage;
+            <div>{output ? output.text : "error"}</div>
+        </div>
+    )
+}
+
+export default SendMessage
