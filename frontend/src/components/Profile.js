@@ -1,22 +1,28 @@
-import Navbar from "./Navbar"
-import { useLocation, useParams } from "react-router-dom"
+import NavbarMain from "./NavbarMain"
+import { useParams } from "react-router-dom"
 import MarketplaceJSON from "../Marketplace.json"
 import axios from "axios"
 import { useState } from "react"
 import NFTTile from "./NFTTile"
-import { useEthers, useEtherBalance, shortenAddress } from "@usedapp/core"
+import { useEthers } from "@usedapp/core"
 
 export default function Profile() {
+    
     const [data, updateData] = useState([])
     const [dataFetched, updateFetched] = useState(false)
     const [address, updateAddress] = useState("0x")
     const [totalPrice, updateTotalPrice] = useState("0")
     const { account, chainId } = useEthers()
-    const balance = useEtherBalance(account)
-    // const shortAddr = shortenAddress(account)
 
+ 
+    // const shortAddr = shortenAddress(account)
+    
     async function getNFTData(tokenId) {
-        const ethers = require("ethers")
+        const ethers = require ("ethers")
+        
+      
+
+        
         let sumPrice = 0
         //After adding your Hardhat network to your metamask, this code will get providers and signers
         const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -69,14 +75,14 @@ export default function Profile() {
 
     return (
         <div className="profileClass" style={{ "min-height": "100vh" }}>
-            <Navbar></Navbar>
+            <NavbarMain></NavbarMain>
             <div className="profileClass">
                 <div className="flex text-center flex-col mt-11 md:text-2xl text-white">
                     <div className="mb-5">
                         <h2 className="font-bold">Wallet Address</h2>
                         {account}
                         <br />
-                        {/* {userBalance} */}
+                    
                         {/* {balance ? utils.formatEther(balance) : 0} ETH */}
                         Chain Id = {chainId}
                     </div>

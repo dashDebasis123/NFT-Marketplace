@@ -8,7 +8,8 @@ import Profile from "./components/Profile"
 import NFTPage from "./components/NFTpage"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
-import SendMessage from "./components/SendMessage"
+// import SendMessage from "./components/SendMessage"
+import Admin from "./components/Admin"
 import ProtectedRoute from "./components/ProtectedRoute"
 
 import { UserAuthContextProvider } from "./components/context/UserAuthContext"
@@ -50,10 +51,10 @@ function App() {
                     }
                 />
                 <Route
-                    path="/sendMessage"
+                    path="/admin"
                     element={
                         <ProtectedRoute>
-                            <SendMessage />
+                            <Admin />
                         </ProtectedRoute>
                     }
                 />

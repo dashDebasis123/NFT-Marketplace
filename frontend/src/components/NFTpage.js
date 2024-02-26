@@ -1,4 +1,4 @@
-import Navbar from "./Navbar"
+import NavbarMain from "./NavbarMain"
 // import axie from "../tile.jpeg";
 import { useLocation, useParams } from "react-router-dom"
 import MarketplaceJSON from "../Marketplace.json"
@@ -9,7 +9,7 @@ import { GetIpfsUrlFromPinata } from "../utils"
 export default function NFTPage(props) {
     console.log("inside nft page");
 
-    
+
     const [data, updateData] = useState({})
     const [dataFetched, updateDataFetched] = useState(false)
     const [message, updateMessage] = useState("")
@@ -84,7 +84,7 @@ export default function NFTPage(props) {
 
     return (
         <div style={{ "min-height": "100vh" }}>
-            <Navbar></Navbar>
+            <NavbarMain></NavbarMain>
             <div className="flex ml-20 mt-20">
                 {/* <img src={data.image} alt="" className="w-2/5" /> */}
                 <div className="text-xl ml-20 space-y-8 text-white shadow-2xl rounded-lg border-2 p-5">
@@ -108,14 +108,14 @@ export default function NFTPage(props) {
                             <button
                                 className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
                                 onClick={() => buyNFT(tokenId)}
-                            >
+                         >
                                 Buy this NFT
                             </button>
                         ) : (
                             <div className="text-emerald-700">You are the owner of this NFT</div>
                         )}
 
-                        <div className="text-green text-center mt-3">{message}</div>
+                        <div className="text-zgreen text-center mt-3">{message}</div>
                     </div>
                 </div>
             </div>

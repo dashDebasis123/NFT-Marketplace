@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { auth, db } from "../firebase"
 import { getDoc, addDoc, setDoc, collection, serverTimestamp, doc } from "firebase/firestore"
-import Navbar from "./Navbar"
+import NavbarMain from "./NavbarMain"
 const SendMessage = () => {
     const [message, setMessage] = useState("")
     const [output, setOutput] = useState()
@@ -60,7 +60,7 @@ const SendMessage = () => {
 
     return (
         <div className="flex flex-col place-items-center mt-10">
-            <Navbar></Navbar>
+            <NavbarMain></NavbarMain>
             <form onSubmit={(event) => sendMessage(event)} className="send-message ">
                 <input
                     id="messageInput"
