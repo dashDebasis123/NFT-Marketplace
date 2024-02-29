@@ -56,7 +56,7 @@ const SendMessage = () => {
             }
         }
         fetchData()
-    }, [output])
+    }, [])
 
     return (
         <div className="flex flex-col place-items-center mt-10">

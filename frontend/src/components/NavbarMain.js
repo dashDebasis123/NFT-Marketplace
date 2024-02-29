@@ -4,9 +4,19 @@
 import { useNavigate } from "react-router"
 import { useUserAuth } from "./context/UserAuthContext"
 import { useEthers } from "@usedapp/core"
-
-import { Navbar, MobileNav, Typography, Button, IconButton } from "@material-tailwind/react"
-import { useState, useEffect } from "react"
+import { DocumentPlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid"
+import {
+    Navbar,
+    MobileNav,
+    Typography,
+    Button,
+    IconButton,
+    Menu,
+    MenuList,
+    MenuItem,
+    MenuHandler,
+} from "@material-tailwind/react"
+import { useState, useEffect, createElement } from "react"
 
 // import { AccountIcon }
 function NavbarMain() {
@@ -29,6 +39,65 @@ function NavbarMain() {
         }
     }
 
+    const profileMenuItems = [
+        {
+            label: "Register your land",
+            icons: DocumentPlusIcon,
+            link: "/sellNFT",
+        },
+        {
+            label: "Registration Status",
+            icons: QuestionMarkCircleIcon,
+            link: "/statustable",
+        },
+    ]
+
+    function RegistrationMenu() {
+        const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+        const closeMenu = () => setIsMenuOpen(false)
+
+        return (
+            <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+                <MenuHandler>
+                    <Button
+                        variant="text"
+                        size="lg"
+                        className="flex items-center gap-1  py-0.5 pr-2 pl-0.5 lg:ml-auto"
+                    >
+                        Registration
+                    </Button>
+                </MenuHandler>
+                <MenuList className="p-1">
+                    {profileMenuItems.map(({ label, icons, link }) => {
+                        return (
+                            <a href={link} key={label}>
+                                <MenuItem
+                                    onClick={closeMenu}
+                                    className={`flex items-center gap-2 
+                                       `}
+                                >
+                                    {createElement(icons, {
+                                        className: `h-6 w-6 `,
+                                        strokeWidth: 2,
+                                    })}
+                                    <Typography
+                                        as="span"
+                                        variant="small"
+                                        className="font-normal"
+                                        color="inherit"
+                                    >
+                                        {label}
+                                    </Typography>
+                                </MenuItem>
+                            </a>
+                        )
+                    })}
+                </MenuList>
+            </Menu>
+        )
+    }
+
     const navList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
@@ -47,7 +116,7 @@ function NavbarMain() {
                 </svg>
 
                 <a href="/marketplace" className="flex items-center">
-                    Marketplace
+                    MARKETPLACE
                 </a>
             </Typography>
             <Typography
@@ -64,16 +133,15 @@ function NavbarMain() {
                 >
                     <path
                         fill-rule="evenodd"
-                        d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm6.905 9.97a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72V18a.75.75 0 0 0 1.5 0v-4.19l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                        d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
                         clip-rule="evenodd"
                     />
-                    <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
+                    <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
                 </svg>
 
-                <a href="/sellNFT" className="flex items-center">
-                    List NFT
-                </a>
+                <RegistrationMenu />
             </Typography>
+
             <Typography
                 as="li"
                 variant="small"
@@ -90,7 +158,7 @@ function NavbarMain() {
                 </svg>
 
                 <a href="/lottery" className="flex items-center">
-                    Lottery
+                    LOTTERY
                 </a>
             </Typography>
             <Typography
@@ -113,7 +181,7 @@ function NavbarMain() {
                 </svg>
 
                 <a href="/profile" className="flex items-center">
-                    Profile
+                    PROFILE
                 </a>
             </Typography>
             {account === adminAddress && (
@@ -139,7 +207,7 @@ function NavbarMain() {
                     </svg>
 
                     <a href="/admin" className="flex items-center">
-                        Admin
+                        ADMIN
                     </a>
                 </Typography>
             )}
@@ -156,7 +224,9 @@ function NavbarMain() {
                 >
                     Land Registry
                 </Typography>
-                <div className="hidden lg:block">{navList}</div>
+
+                <div className="hidden lg:block">{navList} </div>
+
                 <div className="flex items-center gap-x-1">
                     {account && (
                         <Button

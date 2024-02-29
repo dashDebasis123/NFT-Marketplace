@@ -1,9 +1,13 @@
 import NavbarMain from "./NavbarMain"
 import { useState } from "react"
 import { uploadJSONToIPFS } from "../pinata"
-import Marketplace from "../Marketplace.json"
-import { Spinner } from "@material-tailwind/react"
-// import { useLocation } from "react-router"
+// import Marketplace from "../Marketplace.json"
+import { Alert } from "@material-tailwind/react"
+import { auth, db } from "../firebase"
+import { setDoc, serverTimestamp, doc } from "firebase/firestore"
+import { useNavigate } from "react-router"
+import { useEthers } from "@usedapp/core"
+import { useUserAuth } from "./context/UserAuthContext"
 
 export default function SellNFT() {
     const [formParams, updateFormParams] = useState({
@@ -14,11 +18,12 @@ export default function SellNFT() {
         blockno: "",
         price: "",
     })
-
+    const { user } = useUserAuth()
+    const { account } = useEthers()
     const [spinner, setSpinner] = useState(false)
+    const navigate = useNavigate()
 
     // const [fileURL, setFileURL] = useState(null)
-    const ethers = require("ethers")
     const [message, updateMessage] = useState("")
     // const location = useLocation()
 
@@ -51,61 +56,24 @@ export default function SellNFT() {
             console.log("error uploading JSON metadata:", e)
         }
     }
-    async function sendRequest(ipfsurl) {
-        
-    }
-    async function listNFT(e) {
+
+    async function sendRequest(e) {
         e.preventDefault()
+        const metadataURL = await uploadMetadataToIPFS()
 
-        //Upload data to IPFS
-        try {
-            const metadataURL = await uploadMetadataToIPFS()
-            if (metadataURL === -1) {
-                // Set the spinner state to false in case of an error
-                setSpinner(false)
-                return
-            }
-            //After adding your Hardhat network to your metamask, this code will get providers and signers
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
-            const signer = provider.getSigner()
-            // disablespinner()
+        console.log("email:  ", user.email)
 
-            setSpinner(true)
-            updateMessage("Uploading NFT(takes 5 mins).. please dont click anything!")
+        console.log("account: ", account)
+        console.log("metadataURL:  ", metadataURL)
+        await setDoc(doc(db, "requests", user.email), {
+            address: account,
+            status: "requested",
+            time: serverTimestamp(),
+            url: metadataURL,
+            price: formParams.price,
+        })
 
-            //Pull the deployed contract instance
-            let contract = new ethers.Contract(Marketplace.address, Marketplace.abi, signer)
-
-            //message the params to be sent to the create NFT request
-            const price = ethers.utils.parseUnits(formParams.price, "ether")
-            let listingPrice = await contract.getListPrice()
-            listingPrice = listingPrice.toString()
-
-            //actually create the NFT
-            let transaction = await contract.createToken(metadataURL, price, {
-                value: listingPrice,
-            })
-            await transaction.wait()
-
-            alert("Successfully listed your NFT!")
-            // enablespinner()
-
-            updateMessage("")
-            updateFormParams({
-                address: "",
-                mandal: "",
-                district: "",
-                wardno: "",
-                blockno: "",
-                price: "",
-            })
-            setSpinner(false)
-
-            window.location.replace("/marketplace")
-        } catch (e) {
-            alert("Upload error" + e)
-            setSpinner(false)
-        }
+        navigate("/statustable")
     }
 
     console.log("Working", process.env)
@@ -118,10 +86,10 @@ export default function SellNFT() {
                         Land Details
                     </h2>
                     <p class="mt-2 text-lg leading-8 text-gray-600">
-                        Enter the details of the land{" "}
+                        Enter the details of the land
                     </p>
                 </div>
-                <form class="mx-auto mt-16 max-w-xl sm:mt-6">
+                <form class="mx-auto mt-16 max-w-xl sm:mt-6" onSubmit={sendRequest}>
                     <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                         <div class="sm:col-span-2">
                             <label
@@ -135,6 +103,7 @@ export default function SellNFT() {
                                     type="text"
                                     name="address"
                                     id="address"
+                                    required
                                     autocomplete="organization"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
@@ -159,6 +128,7 @@ export default function SellNFT() {
                                     type="text"
                                     name="mandal"
                                     id="mandal"
+                                    required
                                     autocomplete="given-mandal"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
@@ -180,6 +150,7 @@ export default function SellNFT() {
                                     type="text"
                                     name="district"
                                     id="district"
+                                    required
                                     autocomplete="family-name"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
@@ -201,9 +172,12 @@ export default function SellNFT() {
                             </label>
                             <div class="mt-2">
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="wardno"
+                                    pattern="\d+(\.\d{1,2})?"
+
                                     id="wardno"
+                                    required
                                     autocomplete="given-name"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
@@ -222,9 +196,12 @@ export default function SellNFT() {
                             </label>
                             <div class="mt-2">
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="blockno"
+                                    pattern="\d+(\.\d{1,2})?"
+
                                     id="blockno"
+                                    required
                                     autocomplete="family-name"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
@@ -248,9 +225,11 @@ export default function SellNFT() {
                             </label>
                             <div class="mt-2">
                                 <input
+                                    required
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     type="number"
                                     placeholder="Min 0.01 ETH"
+                                    pattern="\d+(\.\d{1,2})?"
                                     step="0.01"
                                     value={formParams.price}
                                     onChange={(e) =>
@@ -260,15 +239,13 @@ export default function SellNFT() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="text-red-500 text-center">{message}</div>
-                    <div class="mt-10">
+                  
+                    <div class="mt-5">
                         <button
+                            type="submit"
                             class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            id="list-spinner"
-                            onClick={listNFT}
                         >
-                            {spinner ? <Spinner /> : "Send Request"}
+                            Send Request
                         </button>
                     </div>
                 </form>

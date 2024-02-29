@@ -65,6 +65,7 @@ const Signup = () => {
                             <div className="mt-2">
                                 <input
                                     id="password"
+                                   
                                     name="password"
                                     type="password"
                                     autoComplete="current-password"

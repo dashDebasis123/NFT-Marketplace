@@ -7,6 +7,7 @@ import Marketplace from "./components/Marketplace"
 import Profile from "./components/Profile"
 import NFTPage from "./components/NFTpage"
 import Login from "./components/Login"
+import StatusTable from "./components/StatusTable"
 import Signup from "./components/Signup"
 // import SendMessage from "./components/SendMessage"
 import Admin from "./components/Admin"
@@ -55,6 +56,14 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <Admin />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/statustable"
+                    element={
+                        <ProtectedRoute>
+                            <StatusTable />
                         </ProtectedRoute>
                     }
                 />
