@@ -230,7 +230,7 @@ function NavbarMain() {
                 <div className="flex items-center gap-x-1">
                     {account && (
                         <Button
-                            variant="text"
+                            variant="outlined"
                             size="sm"
                             color="purple"
                             className="hidden lg:flex"
@@ -247,7 +247,7 @@ function NavbarMain() {
 
                     {!account && (
                         <Button
-                            variant="text"
+                            variant="outlined"
                             size="sm"
                             color="purple"
                             className="hidden lg:flex"
@@ -265,7 +265,7 @@ function NavbarMain() {
                     <Button
                         variant="gradient"
                         color="purple"
-                        size="sm"
+                        size="md"
                         className="hidden lg:inline-block"
                         onClick={handleLogout}
                     >
@@ -317,7 +317,7 @@ function NavbarMain() {
                         {account && (
                             <Button
                                 fullWidth
-                                variant="text"
+                                variant="outlined"
                                 size="sm"
                                 color="purple"
                                 className=""
@@ -335,8 +335,8 @@ function NavbarMain() {
                         {!account && (
                             <Button
                                 fullWidth
-                                variant="text"
-                                size="sm"
+                                variant="outlined"
+                                size="md"
                                 color="purple"
                                 className=""
                                 onClick={activateBrowserWallet}

@@ -7,8 +7,7 @@ import { useState } from "react"
 import { GetIpfsUrlFromPinata } from "../utils"
 
 export default function NFTPage(props) {
-    console.log("inside nft page");
-
+    console.log("inside nft page")
 
     const [data, updateData] = useState({})
     const [dataFetched, updateDataFetched] = useState(false)
@@ -108,7 +107,7 @@ export default function NFTPage(props) {
                             <button
                                 className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
                                 onClick={() => buyNFT(tokenId)}
-                         >
+                            >
                                 Buy this NFT
                             </button>
                         ) : (

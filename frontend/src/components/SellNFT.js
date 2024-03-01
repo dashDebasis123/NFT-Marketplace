@@ -1,9 +1,7 @@
 import NavbarMain from "./NavbarMain"
 import { useState } from "react"
 import { uploadJSONToIPFS } from "../pinata"
-// import Marketplace from "../Marketplace.json"
-import { Alert } from "@material-tailwind/react"
-import { auth, db } from "../firebase"
+import { db } from "../firebase"
 import { setDoc, serverTimestamp, doc } from "firebase/firestore"
 import { useNavigate } from "react-router"
 import { useEthers } from "@usedapp/core"
@@ -20,21 +18,13 @@ export default function SellNFT() {
     })
     const { user } = useUserAuth()
     const { account } = useEthers()
-    const [spinner, setSpinner] = useState(false)
-    const navigate = useNavigate()
 
-    // const [fileURL, setFileURL] = useState(null)
-    const [message, updateMessage] = useState("")
-    // const location = useLocation()
+    const navigate = useNavigate()
 
     //This function uploads the metadata to IPFS
     async function uploadMetadataToIPFS() {
         const { address, mandal, district, wardno, blockno, price } = formParams
-        //Make sure that none of the fields are empty
-        if (!address || !mandal || !district || !wardno || !blockno || !price) {
-            updateMessage("Please fill all the fields!")
-            return -1
-        }
+
         console.log(address, mandal, district, wardno, blockno, price)
         const nftJSON = {
             address,
@@ -50,6 +40,8 @@ export default function SellNFT() {
             const response = await uploadJSONToIPFS(nftJSON)
             if (response.success === true) {
                 console.log("Uploaded JSON to Pinata: ", response)
+                // Set the error state
+
                 return response.pinataURL
             }
         } catch (e) {
@@ -72,7 +64,7 @@ export default function SellNFT() {
             url: metadataURL,
             price: formParams.price,
         })
-
+        updateFormParams({ name: "", description: "", price: "" })
         navigate("/statustable")
     }
 
@@ -175,7 +167,6 @@ export default function SellNFT() {
                                     type="number"
                                     name="wardno"
                                     pattern="\d+(\.\d{1,2})?"
-
                                     id="wardno"
                                     required
                                     autocomplete="given-name"
@@ -199,7 +190,6 @@ export default function SellNFT() {
                                     type="number"
                                     name="blockno"
                                     pattern="\d+(\.\d{1,2})?"
-
                                     id="blockno"
                                     required
                                     autocomplete="family-name"
@@ -239,7 +229,7 @@ export default function SellNFT() {
                             </div>
                         </div>
                     </div>
-                  
+
                     <div class="mt-5">
                         <button
                             type="submit"

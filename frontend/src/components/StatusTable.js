@@ -1,15 +1,7 @@
 import { db } from "../firebase"
-import { doc, getDoc, deleteDoc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import NavbarMain from "./NavbarMain"
-import {
-    Spinner,
-    Card,
-    CardBody,
-    CardFooter,
-    Typography,
-    Button,
-    CardHeader,
-} from "@material-tailwind/react"
+import { Card, CardBody, CardFooter, Typography, Button } from "@material-tailwind/react"
 import Marketplace from "../Marketplace.json"
 
 import { useUserAuth } from "./context/UserAuthContext"
@@ -21,6 +13,7 @@ const StatusTable = () => {
     const ethers = require("ethers")
     const [spinner, setSpinner] = useState(false)
     const [message, updateMessage] = useState("")
+    const [isDisabled, setIsDisabled] = useState(true)
 
     useEffect(() => {
         const fetchRequests = async () => {
@@ -34,6 +27,10 @@ const StatusTable = () => {
                 console.log("Document: ", docSnap.data())
                 setData(docSnap.data())
                 console.log("data: ", data)
+                if (docSnap.data().status === "accepted") {
+                    console.log("success")
+                    setIsDisabled(false)
+                }
             } else {
                 console.log("error")
             }
@@ -86,21 +83,71 @@ const StatusTable = () => {
 
                 <CardBody>
                     <Typography>
-                        <h1 className="text-xl text-black">User: {user ? user.email : ""}</h1>
-                        <h1 className="text-xl text-black">
-                            {" "}
-                            Wallet Address: {data ? data.address : ""}
-                        </h1>
-                        <h1 className="text-xl text-black">Price: {data ? data.price : ""}</h1>
-                        <h1 className="text-xl text-black">Status: {data ? data.status : ""}</h1>
-
-                        <h1 className="text-xl brek-words text-black">
-                            Url: {data ? data.url : ""}
-                        </h1>
+                        {user && data ? (
+                            <div>
+                                <h1 className="text-xl text-black">User: {user.email}</h1>
+                                <h1 className="text-xl text-black">
+                                    Wallet Address: {data.address}
+                                </h1>
+                                <h1 className="text-xl text-black">Price: {data.price}</h1>
+                                <h1 className="capitalize text-xl text-black">
+                                    Status: {data.status}
+                                </h1>
+                                <h1 className="text-xl break-words text-black">Url: {data.url}</h1>
+                            </div>
+                        ) : (
+                            <div className="max-w-full animate-pulse">
+                                <Typography
+                                    as="div"
+                                    variant="h1"
+                                    className="mb-4 h-3 w-56 rounded-full bg-gray-300"
+                                >
+                                    &nbsp;
+                                </Typography>
+                                <Typography
+                                    as="div"
+                                    variant="paragraph"
+                                    className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+                                >
+                                    &nbsp;
+                                </Typography>
+                                <Typography
+                                    as="div"
+                                    variant="paragraph"
+                                    className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+                                >
+                                    &nbsp;
+                                </Typography>
+                                <Typography
+                                    as="div"
+                                    variant="paragraph"
+                                    className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+                                >
+                                    &nbsp;
+                                </Typography>
+                                <Typography
+                                    as="div"
+                                    variant="paragraph"
+                                    className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+                                >
+                                    &nbsp;
+                                </Typography>
+                            </div>
+                        )}
                     </Typography>
                 </CardBody>
                 <CardFooter className="pt-0">
-                    <Button>Read More</Button>
+                    <h1>{message}</h1>
+
+                    {spinner && data ? (
+                        <Button variant="outlined" loading={true}>
+                            Loading
+                        </Button>
+                    ) : (
+                        <Button color="purple" onClick={listNFT} disabled={isDisabled}>
+                            {isDisabled ? (data ? data.status : "Wait...") : "List NFT"}
+                        </Button>
+                    )}
                 </CardFooter>
             </Card>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 // import { Alert } from "@material-tailwind/react";
-import {  Toast } from "react-bootstrap"
+import { Toast } from "react-bootstrap"
 import { useUserAuth } from "./context/UserAuthContext"
 
 const Login = () => {
@@ -10,7 +10,6 @@ const Login = () => {
     const [error, setError] = useState("")
     const { logIn, googleSignIn } = useUserAuth()
     const navigate = useNavigate()
-   
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
