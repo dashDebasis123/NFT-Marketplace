@@ -1,11 +1,11 @@
-import NavbarMain from "./NavbarMain"
-import { useState } from "react"
-import { uploadJSONToIPFS } from "../pinata"
-import { db } from "../firebase"
-import { setDoc, serverTimestamp, doc } from "firebase/firestore"
-import { useNavigate } from "react-router"
-import { useEthers } from "@usedapp/core"
-import { useUserAuth } from "./context/UserAuthContext"
+import NavbarMain from "./NavbarMain";
+import { useState } from "react";
+import { uploadJSONToIPFS } from "../pinata";
+import { db } from "../firebase";
+import { setDoc, serverTimestamp, doc } from "firebase/firestore";
+import { useNavigate } from "react-router";
+import { useEthers } from "@usedapp/core";
+import { useUserAuth } from "./context/UserAuthContext";
 
 export default function SellNFT() {
     const [formParams, updateFormParams] = useState({
@@ -15,17 +15,18 @@ export default function SellNFT() {
         wardno: "",
         blockno: "",
         price: "",
-    })
-    const { user } = useUserAuth()
-    const { account } = useEthers()
+    });
+    const { user } = useUserAuth();
+    const { account } = useEthers();
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     //This function uploads the metadata to IPFS
     async function uploadMetadataToIPFS() {
-        const { address, mandal, district, wardno, blockno, price } = formParams
+        const { address, mandal, district, wardno, blockno, price } =
+            formParams;
 
-        console.log(address, mandal, district, wardno, blockno, price)
+        console.log(address, mandal, district, wardno, blockno, price);
         const nftJSON = {
             address,
             mandal,
@@ -33,42 +34,42 @@ export default function SellNFT() {
             wardno,
             blockno,
             price,
-        }
+        };
 
         try {
             //upload the metadata JSON to IPFS
-            const response = await uploadJSONToIPFS(nftJSON)
+            const response = await uploadJSONToIPFS(nftJSON);
             if (response.success === true) {
-                console.log("Uploaded JSON to Pinata: ", response)
+                console.log("Uploaded JSON to Pinata: ", response);
                 // Set the error state
 
-                return response.pinataURL
+                return response.pinataURL;
             }
         } catch (e) {
-            console.log("error uploading JSON metadata:", e)
+            console.log("error uploading JSON metadata:", e);
         }
     }
 
     async function sendRequest(e) {
-        e.preventDefault()
-        const metadataURL = await uploadMetadataToIPFS()
+        e.preventDefault();
+        const metadataURL = await uploadMetadataToIPFS();
 
-        console.log("email:  ", user.email)
+        console.log("email:  ", user.email);
 
-        console.log("account: ", account)
-        console.log("metadataURL:  ", metadataURL)
+        console.log("account: ", account);
+        console.log("metadataURL:  ", metadataURL);
         await setDoc(doc(db, "requests", user.email), {
             address: account,
             status: "requested",
             time: serverTimestamp(),
             url: metadataURL,
             price: formParams.price,
-        })
-        updateFormParams({ name: "", description: "", price: "" })
-        navigate("/statustable")
+        });
+        updateFormParams({ name: "", description: "", price: "" });
+        navigate("/statustable");
     }
 
-    console.log("Working", process.env)
+    console.log("Working", process.env);
     return (
         <div className="sellnftClass">
             <NavbarMain></NavbarMain>
@@ -81,7 +82,10 @@ export default function SellNFT() {
                         Enter the details of the land
                     </p>
                 </div>
-                <form class="mx-auto mt-16 max-w-xl sm:mt-6" onSubmit={sendRequest}>
+                <form
+                    class="mx-auto mt-16 max-w-xl sm:mt-6"
+                    onSubmit={sendRequest}
+                >
                     <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                         <div class="sm:col-span-2">
                             <label
@@ -124,7 +128,10 @@ export default function SellNFT() {
                                     autocomplete="given-mandal"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
-                                        updateFormParams({ ...formParams, mandal: e.target.value })
+                                        updateFormParams({
+                                            ...formParams,
+                                            mandal: e.target.value,
+                                        })
                                     }
                                     value={formParams.mandal}
                                 ></input>
@@ -172,7 +179,10 @@ export default function SellNFT() {
                                     autocomplete="given-name"
                                     class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={(e) =>
-                                        updateFormParams({ ...formParams, wardno: e.target.value })
+                                        updateFormParams({
+                                            ...formParams,
+                                            wardno: e.target.value,
+                                        })
                                     }
                                     value={formParams.wardno}
                                 ></input>
@@ -223,7 +233,10 @@ export default function SellNFT() {
                                     step="0.01"
                                     value={formParams.price}
                                     onChange={(e) =>
-                                        updateFormParams({ ...formParams, price: e.target.value })
+                                        updateFormParams({
+                                            ...formParams,
+                                            price: e.target.value,
+                                        })
                                     }
                                 ></input>
                             </div>
@@ -241,5 +254,5 @@ export default function SellNFT() {
                 </form>
             </div>
         </div>
-    )
+    );
 }

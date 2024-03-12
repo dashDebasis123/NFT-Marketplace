@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // import { Alert } from "@material-tailwind/react";
-import { Toast } from "react-bootstrap"
-import { useUserAuth } from "./context/UserAuthContext"
+import { Toast } from "react-bootstrap";
+import { useUserAuth } from "./context/UserAuthContext";
 
 const Login = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
-    const { logIn, googleSignIn } = useUserAuth()
-    const navigate = useNavigate()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const { logIn, googleSignIn } = useUserAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            setError("")
-        }, 5000) // 5000 milliseconds (5 seconds)
+            setError("");
+        }, 5000); // 5000 milliseconds (5 seconds)
 
-        return () => clearTimeout(timeoutId) // Cleanup on unmount or dependency change
-    }, [error])
+        return () => clearTimeout(timeoutId); // Cleanup on unmount or dependency change
+    }, [error]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError("")
+        e.preventDefault();
+        setError("");
         try {
-            await logIn(email, password)
-            console.log(email + " successfully logged in")
-            navigate("/Marketplace")
+            await logIn(email, password);
+            console.log(email + " successfully logged in");
+            navigate("/Marketplace");
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         }
-    }
+    };
 
     const handleGoogleSignIn = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            await googleSignIn()
-            navigate("/")
+            await googleSignIn();
+            navigate("/");
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
-    }
+    };
 
     return (
         <>
@@ -54,7 +54,12 @@ const Login = () => {
 
                 <div className="mt-3 sm:mx-auto sm:w-full sm:max-w-sm">
                     {error && (
-                        <Toast onClose={() => setError("")} show={true} delay={5000} autohide>
+                        <Toast
+                            onClose={() => setError("")}
+                            show={true}
+                            delay={5000}
+                            autohide
+                        >
                             <Toast.Header bg="danger" text="white">
                                 <strong className="mr-auto">Error</strong>
                             </Toast.Header>
@@ -101,7 +106,9 @@ const Login = () => {
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                 />
                             </div>
                         </div>
@@ -138,7 +145,7 @@ const Login = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

@@ -9,7 +9,7 @@ html {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;*/
     font-family: "Open Sans", sans-serif;
-    color: #fcfcff; /*font-family: 'M PLUS 1p', sans-serif;*/
+    color: #040404; /*font-family: 'M PLUS 1p', sans-serif;*/
     /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
     /* background-image: url('./bg.png');
@@ -28,5 +28,6 @@ html {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }

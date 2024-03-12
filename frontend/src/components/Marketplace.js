@@ -1,67 +1,81 @@
-import NavbarMain from "./NavbarMain"
-import NFTTile from "./NFTTile"
-import MarketplaceJSON from "../Marketplace.json"
-import axios from "axios"
-import { useState } from "react"
-import { GetIpfsUrlFromPinata } from "../utils"
+import NavbarMain from "./NavbarMain";
+import NFTTile from "./NFTTile";
+import MarketplaceJSON from "../Marketplace.json";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { GetIpfsUrlFromPinata } from "../utils";
 
 export default function Marketplace() {
-    const [data, updateData] = useState([])
-    const [dataFetched, updateFetched] = useState(false)
+    const [data, updateData] = useState([]);
+    const [dataFetched, updateFetched] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await getAllNFTs();
+                console.log("result: ", result);
+                updateData(result);
+                updateFetched(true);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        if (!dataFetched) {
+            fetchData();
+            console.log("data length :", data.length);
+        }
+    }, [dataFetched]);
 
     async function getAllNFTs() {
-        const ethers = require("ethers")
+        const ethers = require("ethers");
         //After adding your Hardhat network to your metamask, this code will get providers and signers
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const signer = provider.getSigner()
-        console.log("signer : ", signer)
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        console.log("signer : ", signer);
         //Pull the deployed contract instance
-        let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
-
-        const prov = new ethers.providers.JsonRpcProvider("https://sepolia.etherscan.io")
-        const transactionReceipt = await prov.getTransactionReceipt(MarketplaceJSON.address)
-
-        // Extract the deployer address from the transaction receipt
-        const deployerAddress = transactionReceipt.from
-        console.log("Deployer Address:", deployerAddress)
+        let contract = new ethers.Contract(
+            MarketplaceJSON.address,
+            MarketplaceJSON.abi,
+            signer,
+        );
 
         //create an NFT Token
-        let transaction = await contract.getAllNFTs()
-
+        let transaction = await contract.getAllNFTs();
+        console.log("transaction", transaction);
         //Fetch all the details of every NFT from the contract and display
-        const items = await Promise.all(
+        let items = await Promise.all(
             transaction.map(async (i) => {
-                var tokenURI = await contract.tokenURI(i.tokenId)
-                console.log("getting this tokenUri", tokenURI)
-                tokenURI = GetIpfsUrlFromPinata(tokenURI)
-                let meta = await axios.get(tokenURI)
-                meta = meta.data
+                if (i.tokenId != 0) {
+                    let tokenURI = await contract.tokenURI(i.tokenId);
+                    console.log("getting this tokenUri", tokenURI);
+                    tokenURI = GetIpfsUrlFromPinata(tokenURI);
+                    let meta = await axios.get(tokenURI);
+                    meta = meta.data;
 
-                let price = ethers.utils.formatUnits(i.price.toString(), "ether")
-                let item = {
-                    price,
-                    tokenId: i.tokenId.toNumber(),
-                    seller: i.seller,
-                    owner: i.owner,
-                    address: meta.address,
-                    mandal: meta.mandal,
-                    district: meta.district,
-                    wardno: meta.wardno,
-                    blockno: meta.blockno,
+                    let price = ethers.utils.formatUnits(
+                        i.price.toString(),
+                        "ether",
+                    );
+                    let item = {
+                        price,
+                        tokenId: i.tokenId.toNumber(),
+                        seller: i.seller,
+                        owner: i.owner,
+                        address: meta.address,
+                        mandal: meta.mandal,
+                        district: meta.district,
+                        wardno: meta.wardno,
+                        blockno: meta.blockno,
+                    };
+                    console.log("Item : ", item);
+                    return item;
                 }
-                // console.log(item);
-                return item
             }),
-        )
-
-        updateFetched(true)
-        updateData(items)
-    }
-
-    if (!dataFetched) {
-        // console.log("in datafetched", dataFetched)
-
-        getAllNFTs()
+        );
+        items = items.filter((item) => item !== undefined);
+        console.log("Items: ", items, items.length);
+        return items;
     }
 
     return (
@@ -73,11 +87,13 @@ export default function Marketplace() {
                 <div className="flex mt-5 justify-between flex-wrap max-w-screen-xl text-center">
                     {data.length !== 0
                         ? data.map((value, index) => {
-                              return <NFTTile data={value} key={index}></NFTTile>
+                              return (
+                                  <NFTTile data={value} key={index}></NFTTile>
+                              );
                           })
-                        : "please connect to the account"}
+                        : "please connect to the account or Loading!!!"}
                 </div>
             </div>
         </div>
-    )
+    );
 }

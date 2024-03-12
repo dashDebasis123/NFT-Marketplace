@@ -1,27 +1,27 @@
-import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Form, Alert } from "react-bootstrap"
-import { Button } from "react-bootstrap"
-import { useUserAuth } from "./context/UserAuthContext"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { useUserAuth } from "./context/UserAuthContext";
 
 const Signup = () => {
-    const [email, setEmail] = useState("")
-    const [error, setError] = useState("")
-    const [password, setPassword] = useState("")
-    const { signUp } = useUserAuth()
-    let navigate = useNavigate()
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
+    const [password, setPassword] = useState("");
+    const { signUp } = useUserAuth();
+    let navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError("")
+        e.preventDefault();
+        setError("");
         try {
-            await signUp(email, password)
-            alert(email + " successfully signed up ")
-            navigate("/marketplace")
+            await signUp(email, password);
+            alert(email + " successfully signed up ");
+            navigate("/marketplace");
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         }
-    }
+    };
 
     return (
         <>
@@ -70,7 +70,9 @@ const Signup = () => {
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                 />
                             </div>
                         </div>
@@ -93,7 +95,7 @@ const Signup = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Signup
+export default Signup;

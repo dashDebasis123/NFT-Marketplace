@@ -1,12 +1,13 @@
 //require('dotenv').config();
-const key = "4b8c31a03fe68fd32022"
-const secret = "c37019f79129e8516878fd10a30dd5ee33e654471cfcbeced91ccc786bbdc63d"
+const key = "4b8c31a03fe68fd32022";
+const secret =
+    "c37019f79129e8516878fd10a30dd5ee33e654471cfcbeced91ccc786bbdc63d";
 
-const axios = require("axios")
-const FormData = require("form-data")
+const axios = require("axios");
+const FormData = require("form-data");
 
 export const uploadJSONToIPFS = async (JSONBody) => {
-    const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`
+    const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
     //making axios POST request to Pinata ⬇️
     return axios
         .post(url, JSONBody, {
@@ -19,32 +20,34 @@ export const uploadJSONToIPFS = async (JSONBody) => {
         .then(function (response) {
             return {
                 success: true,
-                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash,
-            }
+                pinataURL:
+                    "https://gateway.pinata.cloud/ipfs/" +
+                    response.data.IpfsHash,
+            };
         })
         .catch(function (error) {
-            console.log(error)
+            console.log(error);
             return {
                 success: false,
                 message: error.message,
-            }
-        })
-}
+            };
+        });
+};
 
 export const uploadFileToIPFS = async (file) => {
-    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     //making axios POST request to Pinata ⬇️
 
-    let data = new FormData()
-    data.append("file", file)
+    let data = new FormData();
+    data.append("file", file);
 
     const metadata = JSON.stringify({
         name: "testname",
         keyvalues: {
             exampleKey: "exampleValue",
         },
-    })
-    data.append("pinataMetadata", metadata)
+    });
+    data.append("pinataMetadata", metadata);
 
     //pinataOptions are optional
     const pinataOptions = JSON.stringify({
@@ -61,8 +64,8 @@ export const uploadFileToIPFS = async (file) => {
                 },
             ],
         },
-    })
-    data.append("pinataOptions", pinataOptions)
+    });
+    data.append("pinataOptions", pinataOptions);
 
     return axios
         .post(url, data, {
@@ -74,17 +77,19 @@ export const uploadFileToIPFS = async (file) => {
             },
         })
         .then(function (response) {
-            console.log("image uploaded", response.data.IpfsHash)
+            console.log("image uploaded", response.data.IpfsHash);
             return {
                 success: true,
-                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash,
-            }
+                pinataURL:
+                    "https://gateway.pinata.cloud/ipfs/" +
+                    response.data.IpfsHash,
+            };
         })
         .catch(function (error) {
-            console.log(error)
+            console.log(error);
             return {
                 success: false,
                 message: error.message,
-            }
-        })
-}
+            };
+        });
+};

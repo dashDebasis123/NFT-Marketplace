@@ -1,10 +1,13 @@
 // import fullLogo from "../out2.png"
 // import { Link } from "react-router-dom"
 
-import { useNavigate } from "react-router"
-import { useUserAuth } from "./context/UserAuthContext"
-import { useEthers } from "@usedapp/core"
-import { DocumentPlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid"
+import { useNavigate } from "react-router";
+import { useUserAuth } from "./context/UserAuthContext";
+import { useEthers } from "@usedapp/core";
+import {
+    DocumentPlusIcon,
+    QuestionMarkCircleIcon,
+} from "@heroicons/react/24/solid";
 import {
     Navbar,
     MobileNav,
@@ -15,29 +18,32 @@ import {
     MenuList,
     MenuItem,
     MenuHandler,
-} from "@material-tailwind/react"
-import { useState, useEffect, createElement } from "react"
+} from "@material-tailwind/react";
+import { useState, useEffect, createElement } from "react";
 
 // import { AccountIcon }
 function NavbarMain() {
-    const { logOut } = useUserAuth()
-    const navigate = useNavigate()
-    const { account, activateBrowserWallet, deactivate } = useEthers()
-    const [openNav, setOpenNav] = useState(false)
-    const adminAddress = "0x3E6696020ca8DCeb836e4662D48B36d4763dfC3D"
+    const { logOut } = useUserAuth();
+    const navigate = useNavigate();
+    const { account, activateBrowserWallet, deactivate } = useEthers();
+    const [openNav, setOpenNav] = useState(false);
+    const adminAddress = "0x3E6696020ca8DCeb836e4662D48B36d4763dfC3D";
 
     useEffect(() => {
-        window.addEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false))
-    }, [])
+        window.addEventListener(
+            "resize",
+            () => window.innerWidth >= 960 && setOpenNav(false),
+        );
+    }, []);
 
     const handleLogout = async () => {
         try {
-            await logOut()
-            navigate("/")
+            await logOut();
+            navigate("/");
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
-    }
+    };
 
     const profileMenuItems = [
         {
@@ -50,15 +56,19 @@ function NavbarMain() {
             icons: QuestionMarkCircleIcon,
             link: "/statustable",
         },
-    ]
+    ];
 
     function RegistrationMenu() {
-        const [isMenuOpen, setIsMenuOpen] = useState(false)
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-        const closeMenu = () => setIsMenuOpen(false)
+        const closeMenu = () => setIsMenuOpen(false);
 
         return (
-            <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                placement="bottom-end"
+            >
                 <MenuHandler>
                     <Button
                         variant="text"
@@ -91,11 +101,11 @@ function NavbarMain() {
                                     </Typography>
                                 </MenuItem>
                             </a>
-                        )
+                        );
                     })}
                 </MenuList>
             </Menu>
-        )
+        );
     }
 
     const navList = (
@@ -142,6 +152,25 @@ function NavbarMain() {
                 <RegistrationMenu />
             </Typography>
 
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="flex items-center gap-x-2 p-1 font-medium"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-6 h-6"
+                >
+                    <path d="M2.273 5.625A4.483 4.483 0 0 1 5.25 4.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 3H5.25a3 3 0 0 0-2.977 2.625ZM2.273 8.625A4.483 4.483 0 0 1 5.25 7.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 6H5.25a3 3 0 0 0-2.977 2.625ZM5.25 9a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3v-6a3 3 0 0 0-3-3H15a.75.75 0 0 0-.75.75 2.25 2.25 0 0 1-4.5 0A.75.75 0 0 0 9 9H5.25Z" />
+                </svg>
+
+                <a href="/auction" className="flex items-center">
+                    AUCTION
+                </a>
+            </Typography>
             <Typography
                 as="li"
                 variant="small"
@@ -212,10 +241,10 @@ function NavbarMain() {
                 </Typography>
             )}
         </ul>
-    )
+    );
 
     return (
-        <Navbar className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4">
+        <Navbar className="mx-auto max-w-screen-2xl px-4 py-2 lg:px-10 lg:py-7">
             <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
                 <Typography
                     as="a"
@@ -363,7 +392,7 @@ function NavbarMain() {
                 </div>
             </MobileNav>
         </Navbar>
-    )
+    );
 }
 
-export default NavbarMain
+export default NavbarMain;

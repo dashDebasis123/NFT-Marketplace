@@ -39,6 +39,8 @@ module.exports = {
             //   },
             saveDeployments: true,
             chainId: 11155111,
+            gas: 2100000,
+            gasPrice: 8000000000,
         },
        
     },
