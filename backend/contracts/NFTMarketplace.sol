@@ -37,17 +37,7 @@ contract NFTMarketplace is ERC721URIStorage {
     event BalanceWithdrawn(uint256 amount);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-    /* Auction */
-    event auctionStarted();
-    event bidAuction(address indexed sender, uint256 amount);
-    event withdrawAuction(address indexed bidder, uint256 amount);
-    event auctionEnded(address winner, uint256 amount);
-
-    uint256 public auctionNftId;
-    bool public  auctionStatus ;
-    address public highestBidder;
-    uint256 public highestBid;
-    mapping (address => uint256) public bids;
+  
 ////////////////////////////////////////////////////////////////////////////////////////////
     //The structure to store info about a listed token
     struct ListedToken {
