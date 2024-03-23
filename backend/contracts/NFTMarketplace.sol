@@ -317,6 +317,7 @@ contract NFTMarketplace is ERC721URIStorage {
                 players.length 
             )
         )
+        
     );
     }   
 
@@ -371,54 +372,7 @@ contract NFTMarketplace is ERC721URIStorage {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    /* English Auction */
-
-    function startAuction(uint256 _tokenId) public onlyOwner {
-            require(!auctionStatus, "Auction is already running");
-            require(msg.sender == owner, "not seller");
-            
-            auctionNftId = _tokenId;
-            auctionStatus = true;
-            
-            emit auctionStarted();
-        }
-
-    function auctionBid() public  payable {
-        require(auctionStatus, "auction not started");
-        require(msg.value > highestBid, "bid value < highest bid amount");
-
-        if (highestBidder != address(0)) {
-            bids[highestBidder] += highestBid;
-        }
-
-        highestBidder = msg.sender;
-        highestBid = msg.value;
-
-        emit bidAuction(msg.sender, msg.value);
-    }
-
-    function withdraw() public payable {
-        uint256 bal = bids[msg.sender];
-        bids[msg.sender] = 0;
-        payable(msg.sender).transfer(bal);
-
-        emit withdrawAuction(msg.sender, bal);
-    }
-
-
-    function endAuction() public payable onlyOwner() {
-        
-        require(auctionStatus, "auction didn't started");
-        auctionStatus = false;
-
-        if (highestBidder != address(0)) {
-            _transfer(msg.sender, highestBidder, auctionNftId);
-           payable(owner).transfer(highestBid);
-        } 
-
-        emit auctionEnded(highestBidder, highestBid);
-    }
-    
+  
 
 //////////////////////////////////////////////////////////////////////////////////////////// 
    

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import NFTTile from "./NFTTile";
 import { useEthers } from "@usedapp/core";
+import { Typography } from "@material-tailwind/react";
 
 export default function Profile() {
     const [data, updateData] = useState([]);
@@ -157,60 +158,71 @@ export default function Profile() {
     console.log("listedtoken = ", listedToken);
 
     return (
-        <div className="profileClass" style={{ "min-height": "100vh" }}>
+        <div >
             <NavbarMain></NavbarMain>
-            <div className="profileClass">
-                <div className="flex text-center flex-col mt-11 md:text-2xl text-white">
-                    <div className="mb-5">
-                        <h2 className="font-bold">Wallet Address</h2>
-                        {account}
-                        <br />
-                        {/* {balance ? utils.formatEther(balance) : 0} ETH */}
-                        Chain Id = {chainId}
-                    </div>
-                </div>
-                <div className="flex flex-row text-center justify-center mt-10 md:text-2xl text-white">
-                    <div>
-                        <h2 className="font-bold">No. of NFTs</h2>
-                        {data.length}
-                    </div>
-                    <div className="ml-20">
-                        <h2 className="font-bold">Total Value</h2>
-                        {totalPrice} ETH
-                    </div>
-                </div>
-                <div className="flex flex-col text-center items-center mt-11 text-white">
-                    <h2 className="font-bold">
-                        Your Lsited NFTs in NFT Marketplace
-                    </h2>
-                    <div className="flex justify-center flex-wrap max-w-screen-xl">
-                        {data.map((value, index) => {
-                            return <NFTTile data={value} key={index}></NFTTile>;
-                        })}
-                    </div>
-                    <div className="mt-10 text-xl">
-                        {data.length === 0
-                            ? "Oops, No NFT data to display (Are you logged in?)"
-                            : ""}
-                    </div>
-                </div>
 
-                <div className="flex flex-col text-center items-center mt-11 text-white">
-                    <h2 className="font-bold">Your Created NFTs</h2>
-                    <div className="flex justify-center flex-wrap max-w-screen-xl">
-                        {tokenData.map((value, index) => {
-                            return <NFTTile data={value} key={index}></NFTTile>;
-                        })}
-                    </div>
-                    <div className="mt-10 text-xl">
-                        {tokenData.length === 0
-                            ? "Oops, No NFT data to display (Are you logged in?)"
-                            : ""}
-
-                        {account ? "" : "Connect to Metamask"}
-                    </div>
+            <div className="flex text-center flex-col mt-11 md:text-2xl text-white">
+                <div className="mb-5">
+                    <h2 className="font-bold">Wallet Address</h2>
+                    {account}
+                    <br />
+                    {/* {balance ? utils.formatEther(balance) : 0} ETH */}
+                    Chain Id = {chainId}
+                </div>
+                <Typography variant="h3" color="white" > Wallet Address : {account}</Typography>
+            </div>
+            <div className="flex flex-row text-center justify-center mt-10 md:text-2xl text-white">
+                <div>
+                    <h2 className="font-bold">No. of NFTs</h2>
+                    {data.length}
+                </div>
+                <div className="ml-20">
+                    <h2 className="font-bold">Total Value</h2>
+                    {totalPrice} ETH
                 </div>
             </div>
-        </div>
+            
+            <div className="flex flex-col justify-center items-center">
+                <Typography className="underline underline-offset-4" variant="h1" color="white"> Your Lsited NFTs in NFT Marketplace </Typography>
+
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 gap-2 md:grid-cols-3 gap-2">
+
+                    {data.map((value, index) => {
+                        return <NFTTile data={value} key={index}></NFTTile>;
+                    })}
+                </div>
+                <Typography variant="h3" color="white">
+                    {data.length === 0
+                        ? "Oops, No NFT data to display (Are you logged in?)"
+                        : ""}
+
+                    {account ? "" : "Connect to Metamask"}
+                </Typography>
+                {/* </div> */}
+            </div>
+            {/* <div className="flex flex-col text-center items-center mt-11 text-white"> */}
+            {/* <h2 className="font-bold">Your Created NFTs</h2>
+             */}
+            <div className="flex flex-col justify-center items-center">
+                <Typography className="underline underline-offset-4" variant="h1" color="white"> Recently created NFTs </Typography>
+
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 gap-2 md:grid-cols-3 gap-2">
+
+                    {tokenData.map((value, index) => {
+                        return <NFTTile data={value} key={index}></NFTTile>;
+                    })}
+                </div>
+                <Typography variant="h3" color="white">
+                    {tokenData.length === 0
+                        ? "Oops, No NFT data to display (Are you logged in?)"
+                        : ""}
+
+                    {account ? "" : "Connect to Metamask"}
+                </Typography>
+                {/* </div> */}
+            </div>
+        </div >
     );
 }

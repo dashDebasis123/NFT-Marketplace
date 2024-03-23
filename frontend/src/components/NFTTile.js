@@ -12,17 +12,28 @@ import {
     Input,
     Checkbox,
 } from "@material-tailwind/react";
+import MarketplaceJSON from "../Marketplace.json";
 function NFTTile(data) {
     const newTo = {
         pathname: "/nftPage/" + data.data.tokenId,
     };
-
+    const ethers = require("ethers");
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen((cur) => !cur);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    //Pull the deployed contract instance
+    let contract = new ethers.Contract(
+        MarketplaceJSON.address,
+        MarketplaceJSON.abi,
+        signer,
+    );
+
+    
 
     return (
         <Card className="mt-6 w-96">
-            <CardBody>
+            <CardBody className="items-center">
                 <Typography variant="h5" color="blue-gray" className="mb-2">
                     {data.data.tokenId}
                 </Typography>
@@ -31,7 +42,7 @@ function NFTTile(data) {
                 <Typography>{data.data.district}</Typography>
                 <Typography>{data.data.wardno}</Typography>
                 <Typography>{data.data.blockno}</Typography>
-                <Typography>{data.data.owner}</Typography>
+                <Typography>{data.data.price} ETH</Typography>
             </CardBody>
             <Link to={newTo}>
                 <CardFooter className="pt-0">
@@ -39,7 +50,7 @@ function NFTTile(data) {
                 </CardFooter>
             </Link>
 
-            <Button onClick={handleOpen}>Sign In</Button>
+            <Button onClick={handleOpen}>Read More</Button>
             <Dialog
                 size="lg"
                 open={open}
@@ -48,31 +59,36 @@ function NFTTile(data) {
             >
                 <Card className="mx-auto w-full max-w-[24rem]">
                     <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h1" color="blue-gray">
-                            {data.data.tokenId}
+                        <Typography variant="h3" color="blue-gray">
+                            Token ID : {data.data.tokenId}
                         </Typography>
-                        <Typography variant="h2">
-                            {data.data.address}
+                        <Typography variant="lead">
+                            Address : {data.data.address}
                         </Typography>
-                        <Typography variant="h2">{data.data.mandal}</Typography>
-                        <Typography variant="h2">
-                            {data.data.district}
+                        <Typography variant="lead">Mandal : {data.data.mandal}</Typography>
+                        <Typography variant="lead">
+                            District : {data.data.district}
                         </Typography>
-                        <Typography variant="h2">{data.data.wardno}</Typography>
-                        <Typography variant="h2">
-                            {data.data.blockno}
+                        <Typography variant="lead">Ward No. : {data.data.wardno}</Typography>
+                        <Typography variant="lead">
+                            Block No. : {data.data.blockno}
                         </Typography>
-                        <Typography className="truncate" variant="h2">
-                            {data.data.seller}
+                        <Typography variant="lead" className="truncate">
+                            Owner : {data.data.owner}
                         </Typography>
+                        <Typography variant="lead" className="truncate">
+                            Seller : {data.data.seller}
+                        </Typography>
+                        <Typography variant="h3">Price : {data.data.price} ETH</Typography>
+
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
                             variant="gradient"
                             onClick={handleOpen}
-                            fullWidth
+                            
                         >
-                            Sign In
+                            List NFT
                         </Button>
                     </CardFooter>
                 </Card>

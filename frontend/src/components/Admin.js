@@ -163,7 +163,7 @@ const Admin = () => {
                 </Alert>
             )}
 
-            <Card className="flex p-4 md:m-20 ">
+            <Card className="flex p-4 md:m-20">
                 <Typography
                     variant="h5"
                     color="blue-gray"
